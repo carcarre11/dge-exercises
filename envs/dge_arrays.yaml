@@ -6,8 +6,10 @@ channels:
   - defaults
 dependencies:
   - bioconductor-airway
+  - bioconductor-affy
   - bioconductor-deseq2
   - bioconductor-limma
+  - bioconductor-genefilter
   - r-pheatmap
   - r-rcolorbrewer
   - r-base=4.0.3
