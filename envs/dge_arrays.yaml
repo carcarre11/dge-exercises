@@ -1,0 +1,14 @@
+name: dge_arrays
+channels:
+  - conda-forge
+  - bioconda
+  - r
+  - defaults
+dependencies:
+  - bioconductor-airway
+  - bioconductor-deseq2
+  - bioconductor-limma
+  - r-pheatmap
+  - r-rcolorbrewer
+  - r-base=4.0.3
+ 
