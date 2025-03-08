@@ -15,4 +15,5 @@ dependencies:
   - bioconductor-enhancedvolcano
   - bioconductor-mygene
   - r-base=4.0.3
+  - bioconductor-vsn 
  

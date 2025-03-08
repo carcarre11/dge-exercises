@@ -3,7 +3,7 @@ library("DESeq2")
 library("pheatmap")
 library("RColorBrewer")
 library("EnhancedVolcano")
-
+library("vsn")
 ## Cargamos nuestro dataset de ejemplo
 data("airway")
 
@@ -11,7 +11,8 @@ summarized_experiment <- airway
 
 ## Vamos a explorar el colData, es decir, la info. experimental
 exp_info <- as.data.frame(summarized_experiment@colData)
-    
+matrix <- as.data.frame(summarized_experiment@assays$data$counts)
+
 ## Creamos el objeto DESeq2
 dds <- DESeqDataSet(summarized_experiment, design = ~cell + dex)
 
@@ -32,6 +33,8 @@ dds <- dds[keep, ]
 ## la varianza APARTE para que podamos trabajar con cuentas ya "listas".
 
 vsd <- vst(dds, blind = TRUE)
+ntd <- normTransform(dds)
+
 plotPCA(vsd, intgroup = "cell")
 plotPCA(vsd, intgroup = "dex")
 
@@ -55,7 +58,8 @@ dds2 <- DESeq(dds, test = "Wald")
 
 ## Vamos a verificar cómo ha quedado la estimación de la dispersión 
 plotDispEsts(dds2)
-
+meanSdPlot(assay(ntd))
+meanSdPlot(assay(vsd))
 ## Exploremos cómo quedan los cambios de fold entre condiciones con respecto
 ## a las cuentas normalizadas
 plotMA(dds2)
@@ -90,6 +94,8 @@ mat <- assay(vsd)[head(order(my_results_threshold$padj), 30), ]
 pheatmap(mat)
 
 # Creamos el Volcano plot 
+my_results <- my_results[order(my_results$padj),]
+
 
 EnhancedVolcano(my_results,
 lab = my_results$row,
@@ -99,7 +105,7 @@ title = "DEG treated vs untreated",
 FCcutoff = 1,
 pCutoff = 0.05,
 subtitle = NULL,
-boxedLabels = TRUE,
+boxedLabels = FALSE,
 drawConnectors = TRUE,
-labSize = 6.0)
+labSize = 2.0)
 
